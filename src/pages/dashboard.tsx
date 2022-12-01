@@ -1,22 +1,12 @@
-import { getDatabase, ref, onValue } from "firebase/database"
-import { useEffect, useState } from "react"
-import TransactionForm from "../components/transaction-form"
+import TransactionForm from "../components/transactions/transaction-form"
+import TransactionList from "../components/transactions/transaction-list"
+import CategoryForm from "../components/categories/category-form"
 
 export default function Dashboard() {
-	const database = getDatabase()
-	const [data, setData] = useState("")
-	const starCountRef = ref(database, 'currencies/')
-
-	useEffect(() => {
-		onValue(starCountRef, (snapshot) => {
-			const data = snapshot.val()
-			console.log(data)
-			setData(JSON.stringify(data))
-		});
-	}, [])
-
 	return <>
-		Dash {data}
+		<TransactionList type="outcomes" />
+		<TransactionList type="incomes" />
 		<TransactionForm type="outcome"/>
+		<CategoryForm type="outcomeCategories" />
 	</>
 }

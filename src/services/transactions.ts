@@ -33,16 +33,16 @@ const transactionsService = (dbRef: Database, uid: string, type: "income" | "out
 			remove(transactionRef).then(() => {
 				console.log("Transaction deleted")
 				// todo show popup
-			}).catch(error => console.log)
+			}).catch(console.log)
 		},
 		update(transactionId: string, newData: Partial<Transaction>) {
 			const transactionRef = ref(dbRef, `${realtimeDatabasePaths.user[
 				type === "income" ? "incomesPath":"outcomesPath"
 				](uid)}/${transactionId}`)
 			update(transactionRef, newData).then(() => {
-				console.log("Transaction deleted")
+				console.log("Transaction updated")
 				// todo show popup
-			}).catch(error => console.log)
+			}).catch(console.log)
 		},
 	}
 }

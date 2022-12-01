@@ -1,5 +1,5 @@
 import {
-	Box, Button,
+	Box, Button, CircularProgress,
 	FormControl,
 	InputLabel,
 	MenuItem,
@@ -8,10 +8,11 @@ import {
 	TextField,
 } from "@mui/material"
 import { ChangeEvent, useContext, useEffect, useState } from "react"
-import { UserContext } from "../providers/userContext"
-import { TransactionCategory } from "../models/transactionCategory"
-import transactionsService from "../services/transactions"
+import { UserContext } from "../../providers/userContext"
+import { TransactionCategory } from "../../models/transactionCategory"
+import transactionsService from "../../services/transactions"
 import { getDatabase } from "firebase/database"
+import { green } from "@mui/material/colors"
 
 export type ITransactionFormProps = {
 	type: "income" | "outcome"
@@ -34,9 +35,15 @@ const TransactionForm: React.FunctionComponent<ITransactionFormProps> = ({type})
 		}
 
 	useEffect(() => {
-		const { incomeCategories, outcomeCategories } = settings
+		const { incomeCategories, outcomeCategories, currencies } = settings
 		setIncomesCat(Object.values(incomeCategories))
 		setOutcomesCat(Object.values(outcomeCategories))
+		if (Object.keys(currencies).length) {
+			setForm(prevState => ({
+				...prevState,
+				currency: settings.defaultCurrency
+			}))
+		}
 	}, [settings])
 
 	const onSave = async () => {
@@ -127,9 +134,25 @@ const TransactionForm: React.FunctionComponent<ITransactionFormProps> = ({type})
 				{/*<FormHelperText>With label + helper text</FormHelperText>*/}
 			</FormControl>
 		</div>
-		<FormControl sx={{ m: 1, minWidth: 120 }}>
-			<Button disabled={loading} onClick={() => onSave()} variant="contained">{text.buttonText}</Button>
-		</FormControl>
+		<Box sx={{ m: 1, position: "relative", display: "inline-grid" }}>
+			<Button
+				disabled={loading}
+				onClick={() => onSave()}
+				variant="contained">{text.buttonText}</Button>
+			{loading && (
+				<CircularProgress
+					size={24}
+					sx={{
+						color: green[500],
+						position: 'absolute',
+						top: '50%',
+						left: '50%',
+						marginTop: '-12px',
+						marginLeft: '-12px',
+					}}
+				/>
+			)}
+		</Box>
 	</Box>
 }
 
