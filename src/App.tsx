@@ -1,26 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Dashboard from "./pages/dashboard"
+import Login from "./pages/login"
+import { initializeApp } from "firebase/app"
+import { config } from "./config/config"
+import AuthRoute from "./components/auth-route"
+import PageContainer from "./pages/page-container"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+initializeApp(config.firebase)
+
+export type IAppProps = {}
+
+const App: React.FunctionComponent<IAppProps> = (props) => {
+  return (<BrowserRouter>
+		<Routes>
+			<Route path={"/"} element={
+				<AuthRoute>
+					<PageContainer>
+						<Dashboard />
+					</PageContainer>
+			</AuthRoute>}/>
+			<Route path={"/login"} element={<Login />}/>
+		</Routes>
+	</BrowserRouter>);
 }
 
 export default App;
