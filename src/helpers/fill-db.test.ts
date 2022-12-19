@@ -1,78 +1,37 @@
-import { UserModel } from "../models/user"
 import { initializeApp } from "firebase/app"
 import { config } from "../config/config"
 import { getDatabase, ref, set } from "firebase/database"
 import { realtimeDatabasePaths } from "../models/realtime-database-paths"
-import { UserSettings } from "../models/user-settings"
+import { UserData } from "../models/user-data"
 
 initializeApp(config.firebase)
 const db = getDatabase()
-const dbRef = ref(db, realtimeDatabasePaths.defaultSettingsPath)
+const dbRef = ref(db, realtimeDatabasePaths.defaultPath("WWyyWsKPk1bbmBIRYEGy8eEvCk43"))
 
 test("init db", async () => {
 	await set(dbRef, settings)
 	expect("").toBeFalsy()
 })
 
-export {}
+export { }
 
-const settings: UserSettings = {
-	currencies: {
-		usd: {
-			id: "usd",
-			displayName: "USD",
-			visible: true,
-			isFiat: true,
-			rate: ""
-		},
-		eur: {
-			id: "eur",
-			displayName: "EUR",
-			visible: true,
-			isFiat: true,
-			rate: ""
+const settings: UserData = {
+	parts: {
+		part1: {
+			id: "part1",
+			name: "Test part",
+			amount: "1"
 		}
 	},
-	incomeCategories: {
-		investment: {
-			id: "investment",
-			displayName: "Investment",
-			icon: ""
+	things: {
+		thing1: {
+			id: "thing1",
+			name: "Test thing",
+			amount: "1",
+			size: "",
+			details: "",
+			parts: {}
 		}
 	},
-	outcomeCategories: {
-		investment: {
-			id: "investment",
-			displayName: "Investment",
-			icon: ""
-		}
-	},
-	ratesSources: {
-		binance: {
-			id: "binance",
-			icon: "",
-			apiUrl: "",
-			displayName: "Binance",
-			type: "crypto"
-		}
-	},
-	language: "en",
-	defaultCurrency: "usd",
-	pinCode: {
-		isDefined: false,
-		value: ""
-	}
 }
 
-const defaultSettingsData = (uid: string, email:string, name: string): UserModel => {
-	return {
-		id: uid,
-		uid,
-		email,
-		name,
-		displayName: name,
-		phone: "",
-		avatar: "",
-		settings
-	}
-}

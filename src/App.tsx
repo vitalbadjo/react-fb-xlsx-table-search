@@ -6,22 +6,38 @@ import Login from "./pages/login"
 import { initializeApp } from "firebase/app"
 import { config } from "./config/config"
 import AuthRoute from "./components/auth-route"
-import PageContainer from "./pages/page-container"
+import Things from "./pages/things"
+import Parts from "./pages/parts"
+import UploadXlsx from "./pages/upload"
 
 initializeApp(config.firebase)
 
 export type IAppProps = {}
 
 const App: React.FunctionComponent<IAppProps> = (props) => {
-  return (<BrowserRouter>
+	return (<BrowserRouter>
 		<Routes>
 			<Route path={"/"} element={
 				<AuthRoute>
-					<PageContainer>
-						<Dashboard />
-					</PageContainer>
-			</AuthRoute>}/>
-			<Route path={"/login"} element={<Login />}/>
+					<Dashboard />
+				</AuthRoute>
+			} />
+			<Route path={"/parts"} element={
+				<AuthRoute>
+					<Parts />
+				</AuthRoute>
+			} />
+			<Route path={"/things"} element={
+				<AuthRoute>
+					<Things />
+				</AuthRoute>
+			} />
+			<Route path={"/upload"} element={
+				<AuthRoute>
+					<UploadXlsx />
+				</AuthRoute>
+			} />
+			<Route path={"/login"} element={<Login />} />
 		</Routes>
 	</BrowserRouter>);
 }
