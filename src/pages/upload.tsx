@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { LinearProgress, TextField } from "@mui/material"
+import { Grid, LinearProgress, TextField, Typography } from "@mui/material"
 import * as XLSX from "xlsx"
 import { Xls2jsonHelprer } from "../helpers/xls2json"
 import { getDatabase, ref, set, DatabaseReference } from "firebase/database"
@@ -8,6 +8,8 @@ import { getAuth } from "firebase/auth"
 const UploadXlsx = () => {
 	const [ loading, setLoading ] = useState(false)
 	const [ bdRef, setDbRef] = useState<DatabaseReference>()
+
+	const [ isUploaded, setIsUploaded] = useState(false)
 
 	const database = getDatabase()
 	const auth = getAuth()
@@ -41,20 +43,26 @@ const UploadXlsx = () => {
 			})
 		}
 		await reader.readAsBinaryString(file)
+		setIsUploaded(true)
 		setLoading(false)
+		setTimeout(() => {
+			setIsUploaded(false)
+		}, 5000)
 	}
 
 	if (loading) {
 		return <LinearProgress />
 	}
-	return <div style={{ height: 800, width: '100%' }}>
+	return <Grid container gap={2} direction={"column"}>
+		<Typography>Загрузка файла</Typography>
 		<TextField
+			inputProps={{accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"}}
 			type={"file"}
 	// @ts-ignore
 			onChange={e => handleChangeFile(e.target.files)}
 		/>
-		<input type="file" onChange={e => handleChangeFile(e.target.files)}/>
-	</div>
+		{isUploaded && <Typography>Файл загружен, база обновлена</Typography>}
+	</Grid>
 }
 
 export default UploadXlsx

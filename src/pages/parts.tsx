@@ -1,18 +1,20 @@
 import { useContext } from "react"
 import { UserContext } from "../providers/userContext"
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { LinearProgress } from "@mui/material"
+import { LinearProgress, Typography } from "@mui/material"
 
 const columns: GridColDef[] = [
-	{ field: 'id', headerName: 'Article', width: 70 },
-	{ field: 'name', headerName: 'Name', width: 600 },
-	{ field: 'amount', headerName: 'Amount', width: 200 },
+	{ field: 'id', headerName: 'Артикул', width: 70 },
+	{ field: 'name', headerName: 'Название', width: 600 },
+	{ field: 'amount', headerName: 'Кол-во', width: 200 },
 ];
 const Parts = () => {
-	const { data } = useContext(UserContext)
+	const { data, isDataEmpty, isDataLoading } = useContext(UserContext)
 
-	if (!Object.keys(data.parts).length) {
+	if (isDataLoading) {
 		return <LinearProgress />
+	} else if (isDataEmpty) {
+		return <Typography>База данных пуста, загрузите файл на вкладке "Upload"</Typography>
 	}
 	return <div style={{ height: 800, width: '100%' }}>
 		<DataGrid
@@ -22,7 +24,7 @@ const Parts = () => {
 			columns={columns}
 			pageSize={50}
 			rowsPerPageOptions={[50]}
-			checkboxSelection
+			// checkboxSelection
 		/>
 	</div>
 }

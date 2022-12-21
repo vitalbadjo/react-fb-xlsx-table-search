@@ -29,9 +29,9 @@ type Props = {
 
 const drawerWidth = 240;
 const navItems = [
-	{ name: 'Home', path: "/" },
-	{ name: 'Parts', path: '/parts' },
-	{ name: 'Things', path: '/things' },
+	{ name: 'Поиск', path: "/" },
+	{ name: 'Комплектующие', path: '/parts' },
+	{ name: 'Изделия', path: '/things' },
 	{ name: 'Upload xlsx', path: '/upload' },
 ];
 
