@@ -4,9 +4,9 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { LinearProgress, Typography } from "@mui/material"
 
 const columns: GridColDef[] = [
-	{ field: 'id', headerName: 'Артикул', width: 70 },
+	{ field: 'id', headerName: 'Артикул', width: 120 },
 	{ field: 'name', headerName: 'Название', width: 600 },
-	{ field: 'amount', headerName: 'Кол-во', width: 200 },
+	// { field: 'amount', headerName: 'Кол-во', width: 200 },
 ];
 const Parts = () => {
 	const { data, isDataEmpty, isDataLoading } = useContext(UserContext)

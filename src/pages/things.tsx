@@ -41,7 +41,7 @@ const Things = () => {
 			autoPageSize
 			rows={Object.values(data.things)}
 			columns={thingsTableColumns}
-			pageSize={50}
+			pageSize={100}
 			rowsPerPageOptions={[50]}
 			checkboxSelection={false}
 			rowThreshold={100}

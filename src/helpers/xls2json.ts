@@ -40,11 +40,13 @@ export const Xls2jsonHelprer = (workSheet: XLSX.WorkSheet) => {
 
 					if (isMerged.length === 1) {
 						for (let i = isMerged[0].s.r+1; i<= isMerged[0].e.r+1; i++) {
-							const partId = workSheet[`H${i}`].w
-							const amount = workSheet[`I${i}`].w
-							p.things[id.w].parts = {
-								...p.things[id.w].parts,
-								[partId]:{partId, amount}
+							const partId = workSheet[`H${i}`]
+							const amount = workSheet[`I${i}`]
+							if (partId && amount) {
+								p.things[id.w].parts = {
+									...p.things[id.w].parts,
+									[partId.w]:{partId: partId.w, amount: amount.w}
+								}
 							}
 						}
 					}

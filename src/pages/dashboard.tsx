@@ -3,9 +3,8 @@ import { UserContext } from "../providers/userContext"
 import {
 	Autocomplete, Box,
 	Button,
-	Divider, FormControlLabel, Grid, IconButton,
+	Divider, Grid, IconButton,
 	LinearProgress, Paper,
-	Switch,
 	TextField, Typography,
 } from "@mui/material"
 import { Check, Close } from "@mui/icons-material"
@@ -31,7 +30,7 @@ export default function Dashboard() {
 			search()
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [approvedSearchSettings])
+	}, [approvedSearchSettings, entireSearch])
 
 	const handleAddSetting = () => {
 		if (selectedId  && selectedAmount) {
@@ -97,13 +96,18 @@ export default function Dashboard() {
 			>
 				{/*Search settings*/}
 				<Paper component={Grid} item md container direction={"column"} elevation={12} gap={2} p={2}>
-					<Typography>Настройки поиска</Typography>
-					<FormControlLabel control={
-						<Switch   checked={isSearchOnChange} onChange={() => setIsSearchOnChange(!isSearchOnChange)} inputProps={{ 'aria-label': 'ant design' }}/>
-					} label="Поиск при вводе" />
-					<FormControlLabel control={
-						<Switch   checked={entireSearch} onChange={() => setEntireSearch(!entireSearch)} inputProps={{ 'aria-label': 'ant design' }}/>
-					} label="Искать точное совпадение" />
+					{/*<Typography>Настройки поиска</Typography>*/}
+					{/*<FormControlLabel control={*/}
+					{/*	<Switch   checked={isSearchOnChange} onChange={() => setIsSearchOnChange(!isSearchOnChange)} inputProps={{ 'aria-label': 'ant design' }}/>*/}
+					{/*} label="Поиск при вводе" />*/}
+					{/*<FormControlLabel*/}
+					{/*	control={*/}
+					{/*		<Switch*/}
+					{/*			checked={entireSearch}*/}
+					{/*			onChange={() => setEntireSearch(!entireSearch)}*/}
+					{/*			inputProps={{ 'aria-label': 'ant design' }}/>*/}
+					{/*	}*/}
+					{/*	label="Искать точное совпадение" />*/}
 					<Typography>Поиск</Typography>
 					<Grid container direction="row" gap={2}>
 						<Autocomplete
@@ -113,7 +117,7 @@ export default function Dashboard() {
 							onFocus={() => setIsAutoCompleteOpen(true)}
 							onInput={e => {
 									//@ts-ignore
-								console.log(e.nativeEvent.inputType)
+								// console.log(e.nativeEvent.inputType)
 								//@ts-ignore
 									if (e.nativeEvent.inputType === "insertFromPaste") {
 										setSelectedId("")
@@ -160,7 +164,7 @@ export default function Dashboard() {
 								setApprovedSearchSettings(splited)
 							}}
 							onChange={(_, n,r,d) => {
-								console.log("onchange", _, n , r ,d)
+								// console.log("onchange", _, n , r ,d)
 								setSelectedId(n)
 							}}
 							renderInput={(params) => (
@@ -179,11 +183,15 @@ export default function Dashboard() {
 							label="Кол-во"
 							value={selectedAmount || ""}
 							onChange={e => setSelectedAmount(e.target.value)}
+							onKeyPress={e => {
+								if (e.code === "Enter") {
+									handleAddSetting()
+								}
+							}}
 							required
 						/>
 						<IconButton color="primary" onClick={handleAddSetting} disabled={!(selectedId  && selectedAmount)}><Check/></IconButton>
 					</Grid>
-					{!!approvedSearchSettings.length && <Button onClick={() => setApprovedSearchSettings([])} variant={"contained"} >Очистить</Button>}
 					<Grid container direction={"column"} gap={2}>
 						{approvedSearchSettings?.map(e => {
 							return <Grid key={e.id} item container direction={"row"} gap={2} alignItems={"center"}>
@@ -193,6 +201,7 @@ export default function Dashboard() {
 							</Grid>
 						})}
 					</Grid>
+					{!!approvedSearchSettings.length && <Button onClick={() => setApprovedSearchSettings([])} variant={"contained"} >Очистить</Button>}
 					{!isSearchOnChange && <Button onClick={search} variant={"contained"} disabled={isSearchOnChange}>Искать</Button>}
 				</Paper>
 			</Box>
