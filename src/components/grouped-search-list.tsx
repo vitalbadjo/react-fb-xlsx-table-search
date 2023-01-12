@@ -3,7 +3,7 @@ import { Button, Divider, Grid, TextField } from "@mui/material"
 import DoubleFieldedInputSearch from "./doublefielded-input-search"
 import { Thing } from "../models/thing"
 
-type GroupListItems = Record<string, { result:  Thing[]|null }>
+export type GroupListItems = Record<string, { result:  Thing[]|null }>
 type GroupItem = {
 	title: string
 	floorNumber: string

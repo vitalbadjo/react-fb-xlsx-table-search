@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import { UserContext } from "../providers/userContext"
 import {
 	Box,
@@ -8,9 +8,10 @@ import {
 	Typography,
 } from "@mui/material"
 import GroupedSearchList, { GroupedListState } from "../components/grouped-search-list"
+import { generateXlsx } from "../helpers/generate-xlsx"
 
 export default function Dashboard() {
-	const { isDataEmpty, isDataLoading } = useContext(UserContext)
+	const { isDataEmpty, isDataLoading, data } = useContext(UserContext)
 	const [searchResults, setSearchResults] = useState<GroupedListState>({})
 	const [approvedSearchSettings, setApprovedSearchSettings] = useState<{id: string, amount: string}[]>([])
 
@@ -65,9 +66,15 @@ export default function Dashboard() {
 									return null
 								})}
 							</Grid>
-							<Divider variant="middle"/>
+							<Divider variant="middle" style={{marginBottom: "20px"}}/>
 						</Grid>
 					})}
+					<Button
+						variant={"contained"}
+						onClick={() => generateXlsx(searchResults, data.parts)}
+					>
+						Export
+					</Button>
 				</div>
 			</Grid>
 		</Grid>
