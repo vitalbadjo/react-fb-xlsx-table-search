@@ -147,14 +147,10 @@ export default function GroupedSearchList ({dataCallback}: IGroupedSearchListPro
 					/>
 				})}
 				<Button onClick={() => addListItem(groupElKey)} variant={"contained"}>Добавить строку поиска</Button>
+				{i > 0 && <Button onClick={() => removeGroup(groupElKey)} variant={"contained"}>Удалить группу</Button>}
 				<Divider/>
-				{Object.keys(tree).length - 1 > i ?
-					<Button onClick={() => removeGroup(groupElKey)} variant={"contained"}>Удалить группу</Button>
-					:
-					<Button onClick={addGroup} variant={"contained"}>Добавить группу</Button>
-				}
-
 			</Grid>
 		})}
+		<Button onClick={addGroup} variant={"contained"}>Добавить группу</Button>
 	</>
 }
