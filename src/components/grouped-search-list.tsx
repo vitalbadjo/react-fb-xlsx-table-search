@@ -1,7 +1,8 @@
 import { ChangeEvent, useEffect, useState } from "react"
-import { Button, Divider, Grid, TextField } from "@mui/material"
+import { Button, Dialog, DialogContent, DialogTitle, Divider, Grid, Stack, TextField } from "@mui/material"
 import DoubleFieldedInputSearch from "./doublefielded-input-search"
 import { Thing } from "../models/thing"
+import { getDataToLocalStorage, setDataToLocalStorage } from "../helpers/local-storage"
 
 export type GroupListItems = Record<string, { result:  Thing[]|null }>
 type GroupItem = {
@@ -30,10 +31,19 @@ type IGroupedSearchListProps = {
 }
 
 export default function GroupedSearchList ({dataCallback}: IGroupedSearchListProps) {
-	const [tree, setTree] = useState<GroupedListState>(initialLocalState)
+	const [tree, setTree] = useState<GroupedListState>(getDataToLocalStorage() || initialLocalState)
+	const [isDialogOpen, setIsOpenDialog] = useState(false)
+
+	useEffect(() => {
+		const localSavedData = getDataToLocalStorage()
+		if (localSavedData) {
+			setTree(localSavedData)
+		}
+	}, [])
 
 	useEffect(() => {
 		dataCallback(tree)
+		setDataToLocalStorage(tree)
 	}, [tree, dataCallback])
 
 	const changeGroupData = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, groupKey: keyof GroupedListState, field: keyof GroupItem) => {
@@ -152,5 +162,36 @@ export default function GroupedSearchList ({dataCallback}: IGroupedSearchListPro
 			</Grid>
 		})}
 		<Button onClick={addGroup} variant={"contained"}>Добавить группу</Button>
+		<Button
+			style={{marginTop:"20px"}}
+			variant={"contained"}
+			color="error"
+			onClick={() => setIsOpenDialog(true)}
+		>
+			Очистить всё
+		</Button>
+		<Dialog onClose={() => setIsOpenDialog(false)} open={isDialogOpen}>
+			<DialogTitle>Вы уверены?</DialogTitle>
+			<DialogContent>
+				<Stack direction={"row"} spacing={2}>
+					<Button
+						variant={"contained"}
+						onClick={() => setIsOpenDialog(false)}
+					>
+						Отмена
+					</Button>
+					<Button
+						variant={"contained"}
+						color="error"
+						onClick={() => {
+							setTree(initialLocalState)
+							setIsOpenDialog(false)
+						}}
+					>
+						Очистить всё
+					</Button>
+				</Stack>
+			</DialogContent>
+		</Dialog>
 	</>
 }

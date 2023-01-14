@@ -1,10 +1,11 @@
 import React, { PropsWithChildren, useEffect, useState } from "react"
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue, set } from "firebase/database"
 import { UserContext } from "./userContext"
 import { realtimeDatabasePaths } from "../models/realtime-database-paths"
 import { getAuth, Unsubscribe } from "firebase/auth"
 import { ObscuredFBUser } from "../models/user"
 import { UserData } from "../models/user-data";
+import { getSheetData } from "../helpers/sheets-getter"
 
 const initialData = { parts: {}, things: {} }
 
@@ -26,12 +27,27 @@ export const UserProvider: React.FunctionComponent<PropsWithChildren> = ({ child
 					phoneNumber,
 					photoURL
 				});
+				if (uid) {
+					setLoading(true)
+					const database = getDatabase()
+					const dbRef = ref(database, uid)
+					getSheetData().then(data => {
+						set(dbRef!, data).then(_ => {
+							setLoading(false)
+							console.log("Data updated successfully!")
+						}).catch(err => {
+							setLoading(false)
+							console.log("Data upload error", err)
+						})
+					})
+				}
 			} else {
 				setUser(firebaseUser)
 			}
 		})
 
 		return unsubscribe;
+		/* eslint-disable react-hooks/exhaustive-deps */
 	}, []);
 
 	useEffect(() => {

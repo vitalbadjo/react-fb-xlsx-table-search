@@ -11,8 +11,8 @@ export const Xls2jsonHelprer = (workSheet: XLSX.WorkSheet) => {
 	delete workSheet["!autofilter"]
 	delete workSheet["!ref"]
 	delete workSheet["!margins"]
-	console.log("merges", merges)
-	console.log("workSheet", workSheet)
+	// console.log("merges", merges)
+	// console.log("workSheet", workSheet)
 	const {
 		leftTableSchema,
 		rightTableSchema,
@@ -100,7 +100,7 @@ type XlsxMerge = {
 	s: {c: number, r: number}
 }
 
-type DataForUpload = {
+export type DataForUpload = {
 	things: Record<string, Thing>
-	parts: Record<string, Part>
+	parts: Record<string, Part & {partId: string}>
 }

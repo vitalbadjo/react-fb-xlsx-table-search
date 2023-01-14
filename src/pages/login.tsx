@@ -44,6 +44,7 @@ export default function Login() {
 		}
 	}, [user, navigate])
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const signInWithGoogle = async () => {
 		setAuthing(true)
 		await signInWithPopup(auth, new GoogleAuthProvider()).then(e => {

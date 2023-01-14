@@ -32,7 +32,7 @@ const navItems = [
 	{ name: 'Поиск', path: "/" },
 	{ name: 'Комплектующие', path: '/parts' },
 	{ name: 'Изделия', path: '/things' },
-	{ name: 'Upload xlsx', path: '/upload' },
+	{ name: 'Обновить базу', path: '/update' },
 ];
 
 export default function DrawerAppBar(props: PropsWithChildren & Props) {
@@ -105,7 +105,7 @@ export default function DrawerAppBar(props: PropsWithChildren & Props) {
 							color={"inherit"} endIcon={<Logout />}
 							onClick={() => getAuth().signOut()}
 						>
-							Logout
+							Выйти
 						</Button>
 					</Box>
 				</Toolbar>

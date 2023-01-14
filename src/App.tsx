@@ -8,7 +8,7 @@ import { config } from "./config/config"
 import AuthRoute from "./components/auth-route"
 import Things from "./pages/things"
 import Parts from "./pages/parts"
-import UploadXlsx from "./pages/upload"
+import UpdateDatabase from "./pages/update-database"
 
 initializeApp(config.firebase)
 
@@ -32,9 +32,9 @@ const App: React.FunctionComponent<IAppProps> = (props) => {
 					<Things />
 				</AuthRoute>
 			} />
-			<Route path={"/upload"} element={
+			<Route path={"/update"} element={
 				<AuthRoute>
-					<UploadXlsx />
+					<UpdateDatabase />
 				</AuthRoute>
 			} />
 			<Route path={"/login"} element={<Login />} />
