@@ -36,15 +36,15 @@ export function generateXlsx(data: GroupedListState, parts: Record<string, Part>
 		let resultRows: Record<string, string>[] = []
 		Object.keys(list).forEach((listElKey) => {
 			if (list[listElKey].result) {
-				list[listElKey].result?.forEach(resultEl => {
+				list[listElKey].result?.forEach((resultEl, i) => {
 					const { id, name, size, amount } = resultEl
 					const tempRows = Object.keys(resultEl.parts).map(partItemKey => {
 						const {partId, amount: partAmount} = resultEl.parts[partItemKey]
 						return {
 							floorNumber,
-							name,
-							id,
-							amount,
+							name: i === 0 ? name : "",
+							id: i === 0 ? id : "",
+							amount: i === 0 ? amount : "",
 							roomNumber: "",
 							roomArea: "",
 							size,
