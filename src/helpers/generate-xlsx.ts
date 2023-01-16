@@ -38,16 +38,16 @@ export function generateXlsx(data: GroupedListState, parts: Record<string, Part>
 			if (list[listElKey].result) {
 				list[listElKey].result?.forEach((resultEl, i) => {
 					const { id, name, size, amount } = resultEl
-					const tempRows = Object.keys(resultEl.parts).map(partItemKey => {
+					const tempRows = Object.keys(resultEl.parts).map((partItemKey, pi) => {
 						const {partId, amount: partAmount} = resultEl.parts[partItemKey]
 						return {
 							floorNumber,
-							name: i === 0 ? name : "",
-							id: i === 0 ? id : "",
-							amount: i === 0 ? amount : "",
+							name: pi === 0 ? name : "",
+							id: pi === 0 ? id : "",
+							amount: pi === 0 ? amount : "",
 							roomNumber: "",
 							roomArea: "",
-							size,
+							size: pi === 0 ? size : "",
 							partId,
 							partName: parts[partId].name,
 							partAmount
@@ -73,16 +73,16 @@ export function generateXlsx(data: GroupedListState, parts: Record<string, Part>
 
 	/* calculate column width */
 	worksheet["!cols"] = [
-		{ wch: Math.max(10, rows[1].floorNumber.length) },
-		{ wch: Math.max(10, rows[1].name.length) },
-		{ wch: Math.max(10, rows[1].id.length) },
-		{ wch: Math.max(10, rows[1].amount.length) },
-		{ wch: Math.max(10, rows[1].roomNumber.length) },
-		{ wch: Math.max(10, rows[1].roomArea.length) },
-		{ wch: Math.max(10, rows[1].size.length) },
-		{ wch: Math.max(10, rows[1].partId.length) },
-		{ wch: Math.max(10, rows[1].partName.length) },
-		{ wch: Math.max(10, rows[1].partAmount.length) }
+		{ wch: Math.max(10, rows[0].floorNumber.length) },
+		{ wch: Math.max(10, rows[0].name.length) },
+		{ wch: Math.max(10, rows[0].id.length) },
+		{ wch: Math.max(10, rows[0].amount.length) },
+		{ wch: Math.max(10, rows[0].roomNumber.length) },
+		{ wch: Math.max(10, rows[0].roomArea.length) },
+		{ wch: Math.max(10, rows[0].size.length) },
+		{ wch: Math.max(10, rows[0].partId.length) },
+		{ wch: Math.max(10, rows[0].partName.length) },
+		{ wch: Math.max(10, rows[0].partAmount.length) }
 	];
 
 	/* create an XLSX file and try to save to Presidents.xlsx */

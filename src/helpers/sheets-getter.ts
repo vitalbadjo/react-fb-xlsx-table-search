@@ -13,7 +13,12 @@ export async function getSheetData(page: "products" = "products"): Promise<DataF
 
 	const data: {values: string[][]} = response.data
 	const rawData: string[][] = data.values.splice(1)
+	let prevThingId: keyof DataForUpload["things"]= ""
 	return rawData.reduce<DataForUpload>((p, c) => {
+
+		if (c[1]) {
+			prevThingId = c[1]
+		}
 
 		const newPart = c[6] ? {
 			[c[6]]: {
@@ -28,17 +33,31 @@ export async function getSheetData(page: "products" = "products"): Promise<DataF
 			{
 				[c[1]]: {
 					...p.things[c[1]],
-					name: c[0],
-					id: c[1],
-					amount: c[2],
-					size: c[3],
+					...(p.things[c[1]]?.name && p.things[c[1]]?.id && p.things[c[1]]?.amount && p.things[c[1]]?.size ? {} : {
+						name: c[0],
+						id: c[1],
+						amount: c[2],
+						size: c[3],
+					}),
 					parts: {
 						...( p.things[c[1]] ? p.things[c[1]].parts : {}),
 						...newPart
 					}
 				}
 			} :
-			{}
+			{
+				[prevThingId]: {
+					...p.things[prevThingId],
+					name: p.things[prevThingId].name,
+					id: p.things[prevThingId].id,
+					amount: p.things[prevThingId].amount,
+					size: p.things[prevThingId].size,
+					parts: {
+						...( p.things[prevThingId] ? p.things[prevThingId].parts : {}),
+						...newPart
+					}
+				}
+			}
 
 		p = {
 			...p,

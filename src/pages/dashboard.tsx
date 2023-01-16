@@ -59,7 +59,7 @@ export default function Dashboard() {
 								if (searchResults[group].list[listItem]?.result?.[0]) {
 									const {id, size, name, parts} = searchResults[group].list[listItem]?.result?.[0]!
 									return <Accordion
-										key={id}
+										key={id+i}
 										expanded={expanded === `panel${i}`}
 										onChange={handleChangeExpanded(`panel${i}`)}
 									>
